@@ -9,6 +9,10 @@ AI Human Text is a web application that transforms AI-generated text into more n
 - **Text History**: Keep track of your past text humanizations.
 - **Dark & Light Mode**: Choose between dark and light mode for your comfort.
 
+## 🖼️ Screenshot
+
+![AI Human Text Screenshot](https://i.ibb.co/s9dKNFz/ia-humanizer.png)
+
 ## 💻 Tech Stack
 
 ### Programming Languages

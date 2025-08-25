@@ -24,7 +24,7 @@ const TextGeneratedBox: FC<Props> = ({ humanizedText, humanizedTextRef }) => {
 
 
   return (
-    <div ref={humanizedTextRef} className="mt-8 p-4 bg-gray-100 rounded-lg relative">
+    <div ref={humanizedTextRef} className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg relative">
       <h2 className="text-xl font-bold mb-2">Humanized Text:</h2>
       <p className='text-sm'>{humanizedText}</p>
       <Button

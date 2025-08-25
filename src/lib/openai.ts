@@ -45,13 +45,19 @@ export const humanizeTextOpenAI = async (text: string): Promise<string | null> =
 
     if (session?.user?.email && humanizedText) {
       await setHumanizedText(session.user.email, text, humanizedText);
-    } else {
-      throw new Error('Session user email or completion content is undefined');
     }
 
     return humanizedText;
-  } catch (error) {
-    console.error('Error humanizing text with OpenAI:', error);
-    throw new Error('Error humanizing text with OpenAI');
+  } catch (error: unknown) {
+    const err = error as { code?: string; status?: number; message?: string };
+
+    console.error("Error humanizing text with OpenAI (possible lack of balance):", err.message);
+
+    if (err.code === "insufficient_quota" || err.status === 429) {
+      console.warn("Entering DEMO mode: using fictitious text.");
+      return `💡 (Demo) Example humanized version: \"${text}\" with slight adjustments to make it look more natural.`;
+    }
+
+    return `⚠️ Error processing text: showing demo mode.\n\n${text}`;
   }
 };

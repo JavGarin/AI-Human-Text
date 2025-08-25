@@ -12,7 +12,7 @@ export const humanizeTextClaude = async (text: string): Promise<string | null> =
 
   try {
     const msg = await anthropic.messages.create({
-      model: "claude-3-opus-20240229",
+      model: "claude-3-5-sonnet-20240620",
       max_tokens: 1024,
       messages: [
         {
@@ -46,13 +46,24 @@ export const humanizeTextClaude = async (text: string): Promise<string | null> =
 
     if (session?.user?.email && humanizedText) {
       await setHumanizedText(session.user.email, text, humanizedText);
-    } else {
-      throw new Error('Session user email or completion content is undefined');
     }
 
     return humanizedText;
-  } catch (error) {
-    console.error('Error humanizing text with Claude:', error);
-    throw new Error('Error humanizing text with Claude');
+  } catch (error: unknown) {
+    const err = error as { status?: number; error?: { type?: string; message?: string } };
+
+    console.error("Error humanizing text with Claude:", err.error?.message);
+
+    if (err.status === 401 || err.error?.type === 'authentication_error') {
+      console.warn("Entering DEMO mode for Claude due to invalid API key.");
+      return `💡 (Demo) Example humanized version for Claude: "${text}" with slight adjustments to make it look more natural.`;
+    }
+    
+    if (err.status === 429) {
+      console.warn("Entering DEMO mode for Claude due to quota issues.");
+      return `💡 (Demo) Example humanized version for Claude: "${text}" with slight adjustments to make it look more natural.`;
+    }
+
+    return `⚠️ Error processing text with Claude: showing demo mode.\n\n${text}`;
   }
 };

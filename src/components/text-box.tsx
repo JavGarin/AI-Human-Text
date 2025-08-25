@@ -11,8 +11,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form'
 import { toast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
-import { isLoggedIn } from '@/actions/user'
+
+
 import { cn } from '@/lib/utils'
 import TextGeneratedBox from './text-generated-box'
 
@@ -23,7 +23,7 @@ const textSchema = z.object({
 type Model = 'ChatGPT' | 'Claude';
 
 export default function TextBox() {
-  const router = useRouter();
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [wordCount, setWordCount] = useState(0)
@@ -65,16 +65,7 @@ export default function TextBox() {
   const onSubmit = async ({ text }: z.infer<typeof textSchema>) => {
     setIsLoading(true)
 
-    const loggedIn = await isLoggedIn();
-
-    if (!loggedIn) {
-      toast({
-        title: 'You need to be logged in to humanize text',
-        description: 'Please login',
-        variant: 'destructive'
-      })
-      router.push('/login')
-    }
+    
 
     try {
       const result = await humanizeText(text, selectedModel)

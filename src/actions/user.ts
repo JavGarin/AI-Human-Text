@@ -45,10 +45,7 @@ export async function setHumanizedText(userEmail: string, originalText: string, 
   }
 }
 
-export async function isLoggedIn(): Promise<boolean> {
-  const session = await auth();
-  return !!session;
-}
+
 
 
 export async function getUserTextTransformations(): Promise<string[]> {
